@@ -1,27 +1,36 @@
-import * as React from 'react';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
+import * as React from "react";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import Divider from "@mui/material/Divider";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Avatar from "@mui/material/Avatar";
+import Typography from "@mui/material/Typography";
 
-export default function AlignItemsList() {
+export default function AlignItemsList({ title }) {
   return (
-    <List sx={{ width: '95%', height:'80vh' ,margin:'2rem',bgcolor:'#EDEDFE', borderRadius:'10px', overflow:'auto'  }}>
-        <Typography
-                sx={{
-                    fontSize:'30px',
-                    fontWeight:'500',
-                    color:'#0425AD',
-                    display:'flex',
-                    justifyContent:"center",
-                    alignItems:"center"
-                }}
-            >
-                Eşleşen Kişiler
-              </Typography>
+    <List
+      sx={{
+        width: "95%",
+        height: "80vh",
+        margin: "2rem",
+        bgcolor: "#EFEFF7",
+        borderRadius: "10px",
+        overflow: "auto",
+      }}
+    >
+      <Typography
+        sx={{
+          fontSize: "30px",
+          fontWeight: "500",
+          color: "#0425AD",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {title}
+      </Typography>
       <ListItem alignItems="flex-start">
         <ListItemAvatar>
           <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
@@ -31,7 +40,7 @@ export default function AlignItemsList() {
           secondary={
             <React.Fragment>
               <Typography
-                sx={{ display: 'inline' }}
+                sx={{ display: "inline" }}
                 component="span"
                 variant="body2"
                 color="text.primary"
@@ -53,7 +62,7 @@ export default function AlignItemsList() {
           secondary={
             <React.Fragment>
               <Typography
-                sx={{ display: 'inline' }}
+                sx={{ display: "inline" }}
                 component="span"
                 variant="body2"
                 color="text.primary"
@@ -75,14 +84,14 @@ export default function AlignItemsList() {
           secondary={
             <React.Fragment>
               <Typography
-                sx={{ display: 'inline' }}
+                sx={{ display: "inline" }}
                 component="span"
                 variant="body2"
                 color="text.primary"
               >
                 Sandra Adams
               </Typography>
-              {' — Do you have Paris recommendations? Have you ever…'}
+              {" — Do you have Paris recommendations? Have you ever…"}
             </React.Fragment>
           }
         />

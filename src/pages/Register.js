@@ -12,6 +12,18 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { MuiFileInput } from "mui-file-input";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import AuthService from "../services/AuthService";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormHelperText from "@mui/material/FormHelperText";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import moment from "moment";
 
 function Copyright(props) {
   return (
@@ -36,13 +48,43 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function Register() {
-  const handleSubmit = (event) => {
+  const [file, setFile] = React.useState("");
+  const [birthdayValue, setBirthdayValue] = React.useState("");
+  const [gender, setGender] = React.useState("");
+
+  const handleChange = (newFile) => {
+    let file = newFile;
+    let reader = new FileReader();
+    reader.onload = function () {
+      setFile(reader.result.replace("data:", "").replace(/^.+,/, ""));
+    };
+    reader.readAsDataURL(file);
+  };
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    let genderValue = gender === "Erkek" ? 0 : 1;
+    if (gender === "Farketmez") {
+      genderValue = 2;
+    }
+    let birthDayRaw = moment(new Date(birthdayValue)).format("YYYY-MM-DD");
+    const service = new AuthService();
+    await service
+      .register(
+        data.get("firstName"),
+        data.get("lastName"),
+        data.get("email"),
+        data.get("userName"),
+        data.get("password"),
+        birthDayRaw,
+        genderValue,
+        file
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          window.location.href = "/login";
+        }
+      });
   };
 
   return (
@@ -57,7 +99,7 @@ export default function Register() {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <Avatar sx={{ m: 1, bgcolor: "#A3B484" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -91,6 +133,52 @@ export default function Register() {
                   autoComplete="family-name"
                 />
               </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <InputLabel
+                    id="demo-simple-select-helper-label"
+                    height="30px"
+                  >
+                    Cinsiyet
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-helper-label"
+                    id="gender"
+                    value={gender}
+                    label="Cinsiyet"
+                    onChange={(e) => setGender(e.target.value)}
+                    sx={{ height: "50px" }}
+                  >
+                    <MenuItem value={"Erkek"}>Erkek</MenuItem>
+                    <MenuItem value={"Kadın"}>Kadın</MenuItem>
+                    <MenuItem value={"Farketmez"}>Farketmez</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="userName"
+                  label="Kullanıcı Adı"
+                  name="userName"
+                  autoComplete="family-name"
+                />
+              </Grid>
+              <Grid item xs={12} sm={12} md={12} lg={12}>
+                <LocalizationProvider fullWidth dateAdapter={AdapterDayjs}>
+                  <DemoContainer fullWidth components={["DatePicker"]}>
+                    <DatePicker
+                      fullWidth
+                      slotProps={{ textField: { fullWidth: true } }}
+                      id="birthday"
+                      onChange={(e) => setBirthdayValue(e)}
+                      label="Doğum Günü"
+                    />
+                  </DemoContainer>
+                </LocalizationProvider>
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
@@ -110,6 +198,13 @@ export default function Register() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <MuiFileInput
+                  value={file}
+                  label="Profil Fotoğrafı"
+                  onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12}>

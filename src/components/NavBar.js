@@ -46,7 +46,7 @@ function NavBar() {
   };
 
   return (
-    <AppBar position="static" sx={{ bgcolor: "#0F0F83" }}>
+    <AppBar position="static" sx={{ width: "100%", bgcolor: "#A3B484" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
@@ -58,14 +58,14 @@ function NavBar() {
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
+              fontFamily: "Mulish",
               fontWeight: 700,
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
             }}
           >
-            LOGO
+            Roomie
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -129,7 +129,7 @@ function NavBar() {
               textDecoration: "none",
             }}
           >
-            LOGO
+            Roomie
           </Typography>
           <Box
             sx={{
@@ -152,7 +152,17 @@ function NavBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar
+                  className="dataAvatar"
+                  alt="Remy Sharp"
+                  src={
+                    localStorage.getItem("data")
+                      ? "data:image/jpeg;base64," +
+                        JSON.parse(localStorage.getItem("data")).data.user
+                          .profilePhoto
+                      : ""
+                  }
+                />
               </IconButton>
             </Tooltip>
             <Menu

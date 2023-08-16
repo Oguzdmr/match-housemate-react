@@ -12,6 +12,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import AuthService from "../services/AuthService";
 
 function Copyright(props) {
   return (
@@ -39,6 +40,18 @@ export default function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const service = new AuthService();
+    service
+      .login(data.get("email"), data.get("password"))
+      .then((res) => {
+        localStorage.setItem("data", JSON.stringify(res.response));
+        return res;
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          window.location.href = "/";
+        }
+      });
     console.log({
       email: data.get("email"),
       password: data.get("password"),
@@ -57,7 +70,7 @@ export default function Login() {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <Avatar sx={{ m: 1, bgcolor: "#A3B484" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">

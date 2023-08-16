@@ -7,6 +7,7 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import Preferences from "../services/Preferences";
 
 export default function Properties() {
   const [gender, setGender] = React.useState("");
@@ -17,9 +18,35 @@ export default function Properties() {
   const [foreigner, setForeigner] = React.useState("");
   const [time, setTime] = React.useState("");
   const [budget, setBudget] = React.useState("");
-  const [personCount, setPersonCount] = React.useState("");
+  const [minPersonCount, setMinPersonCount] = React.useState(99999999);
+  const [maxPersonCount, setMaxPersonCount] = React.useState(99999999);
   const [city, setCity] = React.useState("");
   const [district, setDistrict] = React.useState("");
+  const [neighborhood, setNeighborhood] = React.useState("");
+  const [hasHome, setHasHome] = React.useState(true);
+
+  const handleClickSave = async () => {
+    let adress = {
+      country: "Türkiye",
+      city: city,
+      district: district,
+      neighborhood: neighborhood,
+    };
+    const service = new Preferences();
+    await service.updatePreferences(
+      smoke,
+      guest,
+      pet,
+      foreigner,
+      alcohol,
+      time,
+      minPersonCount,
+      maxPersonCount,
+      budget,
+      hasHome,
+      adress
+    );
+  };
 
   return (
     <div>
@@ -28,7 +55,7 @@ export default function Properties() {
           width: "85%",
           height: "80vh",
           margin: "2rem",
-          bgcolor: "#EFEFF7",
+          bgcolor: "#FFFFFF",
           borderRadius: "10px",
           overflow: "auto",
         }}
@@ -40,7 +67,7 @@ export default function Properties() {
                 fontSize: "20px",
                 fontWeight: "500",
                 marginTop: "15px",
-                color: "#0425AD",
+                color: "#313C58",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
@@ -63,35 +90,44 @@ export default function Properties() {
                   onChange={(e) => setGender(e.target.value)}
                   sx={{ height: "50px" }}
                 >
-                  <MenuItem value={10}>Erkek</MenuItem>
-                  <MenuItem value={20}>Kadın</MenuItem>
-                  <MenuItem value={30}>Farketmez</MenuItem>
+                  <MenuItem value={0}>Erkek</MenuItem>
+                  <MenuItem value={1}>Kadın</MenuItem>
+                  <MenuItem value={2}>Farketmez</MenuItem>
                 </Select>
               </FormControl>
             </Box>
           </Grid>
-          <Grid item xs={12} lg={6}>
+          <Grid item xs={12} lg={3}>
             <Box sx={{ margin: "10px" }}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-helper-label" height="30px">
-                  Kişi Sayısı
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-helper-label"
-                  id="demo-simple-select-helper"
-                  value={personCount}
-                  label="Kişi Sayısı"
-                  onChange={(e) => setPersonCount(e.target.value)}
-                  sx={{ height: "50px" }}
-                >
-                  <MenuItem value={10}>1</MenuItem>
-                  <MenuItem value={20}>2</MenuItem>
-                  <MenuItem value={30}>3</MenuItem>
-                  <MenuItem value={40}>4+</MenuItem>
-                </Select>
-              </FormControl>
+              <TextField
+                height="30px"
+                fullWidth
+                id="outlined-number-min"
+                label="Min Kişi Sayısı"
+                type="number"
+                onChange={(e) => setMinPersonCount(e.target.value)}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
             </Box>
           </Grid>
+          <Grid item xs={12} lg={3}>
+            <Box sx={{ margin: "10px", height: "30px" }}>
+              <TextField
+                sx={{ height: "30px" }}
+                fullWidth
+                id="outlined-number-max"
+                label="Max Kişi Sayısı"
+                type="number"
+                onChange={(e) => setMaxPersonCount(e.target.value)}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Box>
+          </Grid>
+
           <Grid item xs={12} lg={12}>
             <Box sx={{ margin: "10px" }}>
               <FormControl fullWidth>
@@ -106,9 +142,9 @@ export default function Properties() {
                   onChange={(e) => setPet(e.target.value)}
                   sx={{ height: "50px" }}
                 >
-                  <MenuItem value={10}>Evet</MenuItem>
-                  <MenuItem value={20}>Hayır</MenuItem>
-                  <MenuItem value={30}>Tartışılabilir</MenuItem>
+                  <MenuItem value={1}>Evet</MenuItem>
+                  <MenuItem value={0}>Hayır</MenuItem>
+                  <MenuItem value={2}>Tartışılabilir</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -127,9 +163,9 @@ export default function Properties() {
                   onChange={(e) => setGuest(e.target.value)}
                   sx={{ height: "50px" }}
                 >
-                  <MenuItem value={10}>Evet</MenuItem>
-                  <MenuItem value={20}>Hayır</MenuItem>
-                  <MenuItem value={30}>Tartışılabilir</MenuItem>
+                  <MenuItem value={1}>Evet</MenuItem>
+                  <MenuItem value={0}>Hayır</MenuItem>
+                  <MenuItem value={2}>Tartışılabilir</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -148,9 +184,9 @@ export default function Properties() {
                   onChange={(e) => setSmoke(e.target.value)}
                   sx={{ height: "50px" }}
                 >
-                  <MenuItem value={10}>Evet</MenuItem>
-                  <MenuItem value={20}>Hayır</MenuItem>
-                  <MenuItem value={30}>Tartışılabilir</MenuItem>
+                  <MenuItem value={1}>Evet</MenuItem>
+                  <MenuItem value={0}>Hayır</MenuItem>
+                  <MenuItem value={2}>Tartışılabilir</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -169,9 +205,9 @@ export default function Properties() {
                   onChange={(e) => setAlcohol(e.target.value)}
                   sx={{ height: "50px" }}
                 >
-                  <MenuItem value={10}>Evet</MenuItem>
-                  <MenuItem value={20}>Hayır</MenuItem>
-                  <MenuItem value={30}>Tartışılabilir</MenuItem>
+                  <MenuItem value={1}>Evet</MenuItem>
+                  <MenuItem value={0}>Hayır</MenuItem>
+                  <MenuItem value={2}>Tartışılabilir</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -190,9 +226,9 @@ export default function Properties() {
                   onChange={(e) => setForeigner(e.target.value)}
                   sx={{ height: "50px" }}
                 >
-                  <MenuItem value={10}>Evet</MenuItem>
-                  <MenuItem value={20}>Hayır</MenuItem>
-                  <MenuItem value={30}>Tartışılabilir</MenuItem>
+                  <MenuItem value={1}>Evet</MenuItem>
+                  <MenuItem value={0}>Hayır</MenuItem>
+                  <MenuItem value={2}>Tartışılabilir</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -211,9 +247,9 @@ export default function Properties() {
                   onChange={(e) => setTime(e.target.value)}
                   sx={{ height: "50px" }}
                 >
-                  <MenuItem value={10}>Dönemlik</MenuItem>
-                  <MenuItem value={20}>Yıllık</MenuItem>
-                  <MenuItem value={30}>Farketmez</MenuItem>
+                  <MenuItem value={0}>Dönemlik</MenuItem>
+                  <MenuItem value={1}>Yıllık</MenuItem>
+                  <MenuItem value={2}>Farketmez</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -232,10 +268,10 @@ export default function Properties() {
                   onChange={(e) => setBudget(e.target.value)}
                   sx={{ height: "50px" }}
                 >
-                  <MenuItem value={10}>0 - 5000</MenuItem>
-                  <MenuItem value={20}>5000 - 10000</MenuItem>
-                  <MenuItem value={30}>10000 - 15000</MenuItem>
-                  <MenuItem value={40}>15000+</MenuItem>
+                  <MenuItem value={"0-5000"}>0 - 5000</MenuItem>
+                  <MenuItem value={"5000-10000"}>5000 - 10000</MenuItem>
+                  <MenuItem value={"10000-15000"}>10000 - 15000</MenuItem>
+                  <MenuItem value={"15000-999999"}>15000+</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -254,10 +290,10 @@ export default function Properties() {
                   onChange={(e) => setCity(e.target.value)}
                   sx={{ height: "50px" }}
                 >
-                  <MenuItem value={10}>Ankara</MenuItem>
-                  <MenuItem value={20}>İstanbul</MenuItem>
-                  <MenuItem value={30}>İzmir</MenuItem>
-                  <MenuItem value={40}>Samsun</MenuItem>
+                  <MenuItem value={"Ankara"}>Ankara</MenuItem>
+                  <MenuItem value={"İstanbul"}>İstanbul</MenuItem>
+                  <MenuItem value={"İzmir"}>İzmir</MenuItem>
+                  <MenuItem value={"Samsun"}>Samsun</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -276,10 +312,32 @@ export default function Properties() {
                   onChange={(e) => setDistrict(e.target.value)}
                   sx={{ height: "50px" }}
                 >
-                  <MenuItem value={10}>Altındağ</MenuItem>
-                  <MenuItem value={20}>Çankaya</MenuItem>
-                  <MenuItem value={30}>Yenimahalle</MenuItem>
-                  <MenuItem value={40}>Mamak</MenuItem>
+                  <MenuItem value={"Altındağ"}>Altındağ</MenuItem>
+                  <MenuItem value={"Çankaya"}>Çankaya</MenuItem>
+                  <MenuItem value={"Yenimahalle"}>Yenimahalle</MenuItem>
+                  <MenuItem value={"Mamak"}>Mamak</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+          </Grid>
+          <Grid item xs={12} lg={12}>
+            <Box sx={{ margin: "10px" }}>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-helper-label" height="30px">
+                  Mahalle
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-helper-label"
+                  id="demo-simple-select-helper"
+                  value={neighborhood}
+                  label="Mahalle"
+                  onChange={(e) => setNeighborhood(e.target.value)}
+                  sx={{ height: "50px" }}
+                >
+                  <MenuItem value={"Battalgazi"}>Battalgazi</MenuItem>
+                  <MenuItem value={"Çamlık"}>Çamlık</MenuItem>
+                  <MenuItem value={"Kurtuluş"}>Kurtuluş</MenuItem>
+                  <MenuItem value={"Doğantepe"}>Doğantepe</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -287,14 +345,20 @@ export default function Properties() {
           <Grid item xs={11} lg={11}>
             <Button
               variant="contained"
+              type="button"
               sx={{
                 margin: "15px",
                 width: "100%",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                bgcolor: "#0F0F83",
+                bgcolor: "#A3B484",
+                "&:hover": {
+                  backgroundColor: "#B0C191",
+                  boxShadow: "none",
+                },
               }}
+              onClick={() => handleClickSave()}
             >
               Kaydet
             </Button>

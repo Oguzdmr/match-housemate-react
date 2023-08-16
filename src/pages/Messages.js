@@ -10,6 +10,7 @@ import ImageIcon from "@mui/icons-material/Image";
 import WorkIcon from "@mui/icons-material/Work";
 import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import NavBar from "../components/NavBar";
+import { Padding } from "@mui/icons-material";
 
 const messages = [
   { id: 1, text: "Hi there!", sender: "bot" },
@@ -123,15 +124,18 @@ const ChatUI = () => {
                   </Grid>
                   <Grid item xs={2}>
                     <Button
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
                       fullWidth
                       size="large"
                       color="primary"
                       variant="contained"
                       endIcon={<SendIcon />}
                       onClick={handleSend}
-                    >
-                      Send
-                    </Button>
+                    ></Button>
                   </Grid>
                 </Grid>
               </Box>

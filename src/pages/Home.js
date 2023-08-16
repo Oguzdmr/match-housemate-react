@@ -7,13 +7,13 @@ import Properties from "../components/Properties";
 export default function Home() {
   return (
     <div>
-      <Box >
+      <Box>
         <Grid container spacing={0}>
           <Grid item xs={12} lg={12}>
             <NavBar></NavBar>
           </Grid>
           <Grid item xs={12} lg={8}>
-            <Box>
+            <Box display={"flex"}>
               <List title={"Eşleşen Kişiler"}></List>
             </Box>
           </Grid>

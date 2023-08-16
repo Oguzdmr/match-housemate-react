@@ -14,19 +14,21 @@ export default function AlignItemsList({ title }) {
         width: "95%",
         height: "80vh",
         margin: "2rem",
-        bgcolor: "#EFEFF7",
+        bgcolor: "#FFFFFF",
         borderRadius: "10px",
         overflow: "auto",
+        fontFamily: "Mulish",
       }}
     >
       <Typography
         sx={{
           fontSize: "30px",
           fontWeight: "500",
-          color: "#0425AD",
+          color: "#313C58",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          fontFamily: "Mulish",
         }}
       >
         {title}

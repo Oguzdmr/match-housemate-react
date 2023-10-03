@@ -2,28 +2,29 @@ import React from "react";
 import { Box, TextField, Grid } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Preferences from "../services/Preferences";
 
 export default function Properties() {
-  const [gender, setGender] = React.useState("");
-  const [pet, setPet] = React.useState("");
-  const [guest, setGuest] = React.useState("");
-  const [smoke, setSmoke] = React.useState("");
-  const [alcohol, setAlcohol] = React.useState("");
-  const [foreigner, setForeigner] = React.useState("");
-  const [time, setTime] = React.useState("");
-  const [budget, setBudget] = React.useState("");
-  const [minPersonCount, setMinPersonCount] = React.useState(99999999);
-  const [maxPersonCount, setMaxPersonCount] = React.useState(99999999);
-  const [city, setCity] = React.useState("");
-  const [district, setDistrict] = React.useState("");
-  const [neighborhood, setNeighborhood] = React.useState("");
-  const [hasHome, setHasHome] = React.useState(true);
+  let userPreferences = (JSON.parse(window.localStorage.getItem('data') || '{}') || {}).data.user.preferences;
+  const [gender, setGender] = React.useState(userPreferences.genderPref);
+  const [pet, setPet] = React.useState(userPreferences.petsAllowed);
+  const [guest, setGuest] = React.useState(userPreferences.guestsAllowed);
+  const [smoke, setSmoke] = React.useState(userPreferences.smokingAllowed);
+  const [alcohol, setAlcohol] = React.useState(userPreferences.alcoholAllowed);
+  const [foreigner, setForeigner] = React.useState(userPreferences.foreignersAllowed);
+  const [time, setTime] = React.useState(userPreferences.duration);
+  const [budget, setBudget] = React.useState(userPreferences.budgetMin + '-' + userPreferences.budgetMax);
+  const [minPersonCount, setMinPersonCount] = React.useState(userPreferences.acceptableRoommatesMin);
+  const [maxPersonCount, setMaxPersonCount] = React.useState(userPreferences.acceptableRoommatesMax);
+  const [city, setCity] = React.useState(userPreferences.address.city);
+  const [district, setDistrict] = React.useState(userPreferences.address.district);
+  const [neighborhood, setNeighborhood] = React.useState(userPreferences.address.neighborhood);
+  const [hasHome, setHasHome] = React.useState(userPreferences.hasHome);
+  const service = new Preferences();
 
   const handleClickSave = async () => {
     let adress = {
@@ -32,7 +33,7 @@ export default function Properties() {
       district: district,
       neighborhood: neighborhood,
     };
-    const service = new Preferences();
+
     await service.updatePreferences(
       smoke,
       guest,
@@ -105,6 +106,7 @@ export default function Properties() {
                 id="outlined-number-min"
                 label="Min Kişi Sayısı"
                 type="number"
+                defaultValue={minPersonCount}
                 onChange={(e) => setMinPersonCount(e.target.value)}
                 InputLabelProps={{
                   shrink: true,
@@ -120,6 +122,7 @@ export default function Properties() {
                 id="outlined-number-max"
                 label="Max Kişi Sayısı"
                 type="number"
+                defaultValue={maxPersonCount}
                 onChange={(e) => setMaxPersonCount(e.target.value)}
                 InputLabelProps={{
                   shrink: true,

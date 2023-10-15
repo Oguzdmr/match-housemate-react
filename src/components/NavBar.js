@@ -158,7 +158,7 @@ function NavBar() {
                   src={
                     localStorage.getItem("data")
                       ? "data:image/jpeg;base64," +
-                        JSON.parse((((localStorage || {}).getItem("data") || {}).data || {}).user || {}).profilePhoto || ""
+                        JSON.parse((((window.localStorage || {}).getItem("data") || {}).data || {}).user || "{}").profilePhoto || ""
                       : ""
                   }
                 />

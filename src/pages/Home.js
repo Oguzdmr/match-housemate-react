@@ -9,14 +9,14 @@ export default function Home() {
   const [items, setItems] = React.useState([]);
   const service = new Match();
 
-  React.useEffect(()=>{
+  React.useEffect(()=> {
     const getItems = async () => {
       let _items = await service.getMatchUser();
       
-      setItems(_items.response.data.matches)
+      setItems((((_items || []).response || {}).data || {}).matches || []) 
 
-      console.log("_items",_items);
-      console.log("items",items);
+      console.log("_items", _items);
+      console.log("items", items);
     }
 
     getItems();

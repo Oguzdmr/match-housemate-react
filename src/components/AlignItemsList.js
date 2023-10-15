@@ -14,19 +14,19 @@ import Match from "../services/MatchService";
 import Favorite from "../services/Favorite";
 
 
-export default function AlignItemsList({ title,items }) {
+export default function AlignItemsList({ title, items }) {
 
   const [preferencesText,setPreferencesText] = React.useState({})
   const service = new Favorite();
 
   const preferences = (items) => {
-    var itemsPreferences = (items || {}).preferences || {};
+    var itemsPreferences = (items || []).preferences || {};
 
     var _preferencesObj = {
       acceptableRoommatesMax : parseInt(itemsPreferences.acceptableRoommatesMax) === 999 ? "Farketmez": itemsPreferences.acceptableRoommatesMax || "",
       acceptableRoommatesMin:itemsPreferences.acceptableRoommatesMin || "",
       alcoholAllowed:itemsPreferences.alcoholAllowed === 2 ? "Tartışılabilir" : (itemsPreferences.alcoholAllowed === 1 ? "Evet": "Hayır"),
-      budgetMax:itemsPreferences.budgetMax >= 100000 ? "Farketmez" : itemsPreferences.budgetMax.toString(),
+      budgetMax:(itemsPreferences.budgetMax || 0) >= 100000 ? "Farketmez" : (itemsPreferences.budgetMax || 0).toString(),
       budgetMin:itemsPreferences.budgetMin.toString(),
       duration:itemsPreferences.duration  === 2 ? "Farketmez" : (itemsPreferences.duration === 1 ? "Yıllık": "Dönemlik"),
       foreignersAllowed:itemsPreferences.foreignersAllowed === 2 ? "Tartışılabilir" : (itemsPreferences.foreignersAllowed === 1 ? "Evet": "Hayır"),
@@ -87,17 +87,17 @@ export default function AlignItemsList({ title,items }) {
         {title}
       </Typography>
       {items.length > 0 && items.map((item)=>(
-        <div key={item.id}>
+        <div key={item.user.id}>
               <ListItem alignItems="flex-start" secondaryAction={
-                    <IconButton edge="end" aria-label="favorite" onClick={()=>handleClickAddFavorite(item.id)} >
-                      <StarBorderIcon />
+                    <IconButton edge="end" aria-label="favorite" onClick={()=>handleClickAddFavorite(item.user.id)} >
+                      {item.isFolowing ? <StarIcon/> : <StarBorderIcon/>}
                     </IconButton>
                   } >
               <ListItemAvatar>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
               </ListItemAvatar>
               <ListItemText
-                primary={item.firstName || "" + " " + item.lastName || ""}
+                primary={item.user.firstName || "" + " " + item.user.lastName || ""}
                 secondary={
                   <React.Fragment>
                     <Typography
@@ -106,7 +106,7 @@ export default function AlignItemsList({ title,items }) {
                       variant="body2"
                       color="text.primary"
                     >
-                      { objToText(preferences(item))  }
+                      { objToText(preferences(item.user))  }
                       
                     </Typography>
                   </React.Fragment>

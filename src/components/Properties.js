@@ -35,6 +35,7 @@ export default function Properties() {
     };
 
     await service.updatePreferences(
+      gender,
       smoke,
       guest,
       pet,

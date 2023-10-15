@@ -1,6 +1,6 @@
 
 class Preferences{
-    updatePreferences = async (smokingAllowed,guestsAllowed,petsAllowed,foreignersAllowed,alcoholAllowed,duration,acceptableRoommatesMin,acceptableRoommatesMax,budget, hasHome, address) =>{
+    updatePreferences = async (gender,smokingAllowed,guestsAllowed,petsAllowed,foreignersAllowed,alcoholAllowed,duration,acceptableRoommatesMin,acceptableRoommatesMax,budget, hasHome, address) =>{
         let status = 0
         let res;
 
@@ -11,6 +11,7 @@ class Preferences{
               "Authorization": 'Bearer '  + JSON.parse(localStorage.getItem('data')).data.accessToken
             },
             body: JSON.stringify({
+                "genderPref":parseInt(gender),
                 "smokingAllowed": parseInt(smokingAllowed),
                 "guestsAllowed": parseInt(guestsAllowed),
                 "petsAllowed": parseInt(petsAllowed),

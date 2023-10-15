@@ -110,7 +110,6 @@ export default function AlignItemsList({ title,items }) {
                       { objToText(preferences(item))  }
                       
                     </Typography>
-                    {" "}
                   </React.Fragment>
                 }
               />

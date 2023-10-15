@@ -20,19 +20,19 @@ function Copyright(props) {
       variant="body2"
       color="text.secondary"
       align="center"
-      {...props}
-    >
+      {...props}>
+
       {"Copyright © "}
+
       <Link color="inherit" href="https://mui.com/">
         Your Website
-      </Link>{" "}
+      </Link>
+      {" "}
       {new Date().getFullYear()}
       {"."}
     </Typography>
   );
 }
-
-// TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
@@ -41,10 +41,11 @@ export default function Login() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const service = new AuthService();
-    service
-      .login(data.get("email"), data.get("password"))
+
+    service.login(data.get("email") || "", data.get("password") || "")
       .then((res) => {
-        localStorage.setItem("data", JSON.stringify(res.response));
+        localStorage.setItem("data", JSON.stringify((res || {}).response || {}));
+
         return res;
       })
       .then((res) => {
@@ -52,10 +53,13 @@ export default function Login() {
           window.location.href = "/";
         }
       });
+
+    /*  
     console.log({
       email: data.get("email"),
       password: data.get("password"),
     });
+    */
   };
 
   return (
@@ -68,20 +72,22 @@ export default function Login() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-          }}
-        >
+          }}>
+
           <Avatar sx={{ m: 1, bgcolor: "#A3B484" }}>
             <LockOutlinedIcon />
           </Avatar>
+
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
+
           <Box
             component="form"
             onSubmit={handleSubmit}
             noValidate
-            sx={{ mt: 1 }}
-          >
+            sx={{ mt: 1 }}>
+
             <TextField
               margin="normal"
               required
@@ -92,6 +98,7 @@ export default function Login() {
               autoComplete="email"
               autoFocus
             />
+
             <TextField
               margin="normal"
               required
@@ -102,24 +109,27 @@ export default function Login() {
               id="password"
               autoComplete="current-password"
             />
+
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
+
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
+              sx={{ mt: 3, mb: 2 }}>
               Sign In
             </Button>
+
             <Grid container>
               <Grid item xs>
                 {/* <Link href="#" variant="body2">
                   Forgot password?
                 </Link> */}
               </Grid>
+
               <Grid item>
                 <Link href="/register" variant="body2">
                   {"Don't have an account? Sign Up"}
@@ -128,6 +138,7 @@ export default function Login() {
             </Grid>
           </Box>
         </Box>
+
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>

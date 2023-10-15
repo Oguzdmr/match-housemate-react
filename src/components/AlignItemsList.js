@@ -12,29 +12,29 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
 import Match from "../services/MatchService";
 import Favorite from "../services/Favorite";
-import Preferences from "../models/Preferences"
 
 
 export default function AlignItemsList({ title,items }) {
 
   const [preferencesText,setPreferencesText] = React.useState({})
   const service = new Favorite();
-  const preferencesClass = new Preferences()
 
   const preferences = (items) => {
+    var itemsPreferences = (items || {}).preferences || {};
+
     var _preferencesObj = {
-      acceptableRoommatesMax : parseInt(items.preferences.acceptableRoommatesMax) === 999 ? "Farketmez": items.preferences.acceptableRoommatesMax,
-      acceptableRoommatesMin:items.preferences.acceptableRoommatesMin,
-      alcoholAllowed:items.preferences.alcoholAllowed === 2 ? "Tartışılabilir" : (items.preferences.alcoholAllowed === 1 ? "Evet": "Hayır"),
-      budgetMax:items.preferences.budgetMax >= 100000 ? "Farketmez" : items.preferences.budgetMax.toString(),
-      budgetMin:items.preferences.budgetMin.toString(),
-      duration:items.preferences.duration === 2 ? "Farketmez" : (items.preferences.duration === 1 ? "Yıllık": "Dönemlik"),
-      foreignersAllowed:items.preferences.foreignersAllowed === 2 ? "Tartışılabilir" : (items.preferences.foreignersAllowed === 1 ? "Evet": "Hayır"),
-      genderPref:items.preferences.genderPref === 2 ? "Farketmez" : (items.preferences.genderPref === 1 ? "Kadın": "Erkek"),
-      guestsAllowed:items.preferences.guestsAllowed === 2 ? "Tartışılabilir" : (items.preferences.guestsAllowed === 1 ? "Evet": "Hayır"),
-      hasHome:items.preferences.hasHome  ? "Hayır" : "Evet",
-      petsAllowed:items.preferences.petsAllowed === 2 ? "Tartışılabilir" : (items.preferences.petsAllowed === 1 ? "Evet": "Hayır"),
-      smokingAllowed:items.preferences.smokingAllowed === 2 ? "Tartışılabilir" : (items.preferences.smokingAllowed === 1 ? "Evet": "Hayır"),
+      acceptableRoommatesMax : parseInt(itemsPreferences.acceptableRoommatesMax) === 999 ? "Farketmez": itemsPreferences.acceptableRoommatesMax || "",
+      acceptableRoommatesMin:itemsPreferences.acceptableRoommatesMin || "",
+      alcoholAllowed:itemsPreferences.alcoholAllowed === 2 ? "Tartışılabilir" : (itemsPreferences.alcoholAllowed === 1 ? "Evet": "Hayır"),
+      budgetMax:itemsPreferences.budgetMax >= 100000 ? "Farketmez" : itemsPreferences.budgetMax.toString(),
+      budgetMin:itemsPreferences.budgetMin.toString(),
+      duration:itemsPreferences.duration  === 2 ? "Farketmez" : (itemsPreferences.duration === 1 ? "Yıllık": "Dönemlik"),
+      foreignersAllowed:itemsPreferences.foreignersAllowed === 2 ? "Tartışılabilir" : (itemsPreferences.foreignersAllowed === 1 ? "Evet": "Hayır"),
+      genderPref:itemsPreferences.genderPref === 2 ? "Farketmez" : (itemsPreferences.genderPref === 1 ? "Kadın": "Erkek"),
+      guestsAllowed:itemsPreferences.guestsAllowed === 2 ? "Tartışılabilir" : (itemsPreferences.guestsAllowed === 1 ? "Evet": "Hayır"),
+      hasHome:itemsPreferences.hasHome  ? "Hayır" : "Evet",
+      petsAllowed:itemsPreferences.petsAllowed === 2 ? "Tartışılabilir" : (itemsPreferences.petsAllowed === 1 ? "Evet": "Hayır"),
+      smokingAllowed:itemsPreferences.smokingAllowed === 2 ? "Tartışılabilir" : (itemsPreferences.smokingAllowed === 1 ? "Evet": "Hayır"),
     }
 
     console.log("PREF",_preferencesObj);
@@ -44,24 +44,23 @@ export default function AlignItemsList({ title,items }) {
   const objToText = (preferences) => {
     var allText = "";
 
-    allText += preferences["genderPref"] + "\n" + preferences["smokingAllowed"]
+    allText += preferences["genderPref"] || "" + "\n" + preferences["smokingAllowed"] || ""
 
     return allText;
   }
 
   const handleClickAddFavorite = async (id) => {
-
     await service.addFavoritesUser(
       id
     );
   };
 
   const handleClickRemoveFavorite = async (id) => {
-
     await service.removeFavoritesUser(
       id
     );
   };
+
   return (
     <List
       sx={{
@@ -98,7 +97,7 @@ export default function AlignItemsList({ title,items }) {
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
               </ListItemAvatar>
               <ListItemText
-                primary={item.firstName + " " + item.lastName}
+                primary={item.firstName || "" + " " + item.lastName || ""}
                 secondary={
                   <React.Fragment>
                     <Typography

@@ -31,10 +31,10 @@ function NavBar() {
   };
 
   const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
+    setAnchorElNav(event.currentTarget || "");
   };
   const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
+    setAnchorElUser(event.currentTarget || "");
   };
 
   const handleCloseNavMenu = () => {
@@ -158,8 +158,7 @@ function NavBar() {
                   src={
                     localStorage.getItem("data")
                       ? "data:image/jpeg;base64," +
-                        JSON.parse(localStorage.getItem("data")).data.user
-                          .profilePhoto
+                        JSON.parse((((localStorage || {}).getItem("data") || {}).data || {}).user || {}).profilePhoto || ""
                       : ""
                   }
                 />

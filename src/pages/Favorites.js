@@ -1,8 +1,7 @@
 import React from "react";
 import NavBar from "../components/NavBar";
 import List from "../components/AlignItemsList";
-import { Grid, Box, Typography, colors } from "@mui/material";
-import Properties from "../components/Properties";
+import { Grid, Box } from "@mui/material";
 import Favorite from "../services/Favorite";
 
 export default function Favorites() {
@@ -12,10 +11,13 @@ export default function Favorites() {
   React.useEffect(()=>{
     const getItems = async () => {
       let _items = await service.getFavoritesUser();
+
       setItems(_items.response.data)
+
       console.log("_items",_items);
       console.log("items",items);
     }
+    
     getItems();
   },[])
   

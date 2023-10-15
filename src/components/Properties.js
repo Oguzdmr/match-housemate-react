@@ -269,7 +269,7 @@ export default function Properties() {
                   id="demo-simple-select-helper"
                   value={budget}
                   label="Bütçe Aralığı"
-                  onChange={(e) => setBudget(e.target.value)}
+                  onChange={(e) => setBudget(((e || {}).target || {}).value || "")}
                   sx={{ height: "50px" }}
                 >
                   <MenuItem value={"0-5000"}>0 - 5000</MenuItem>
@@ -313,7 +313,7 @@ export default function Properties() {
                   id="demo-simple-select-helper"
                   value={district}
                   label="İlçe"
-                  onChange={(e) => setDistrict(e.target.value)}
+                  onChange={(e) => setDistrict(((e || {}).target || {}).value || {})}
                   sx={{ height: "50px" }}
                 >
                   <MenuItem value={"Altındağ"}>Altındağ</MenuItem>
@@ -335,7 +335,7 @@ export default function Properties() {
                   id="demo-simple-select-helper"
                   value={neighborhood}
                   label="Mahalle"
-                  onChange={(e) => setNeighborhood(e.target.value)}
+                  onChange={(e) => setNeighborhood(((e || {}).target || {}).value || {})}
                   sx={{ height: "50px" }}
                 >
                   <MenuItem value={"Battalgazi"}>Battalgazi</MenuItem>

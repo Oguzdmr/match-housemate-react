@@ -1,7 +1,7 @@
 import React from "react";
 import NavBar from "../components/NavBar";
 import List from "../components/AlignItemsList";
-import { Grid, Box, Typography, colors } from "@mui/material";
+import { Grid, Box } from "@mui/material";
 import Properties from "../components/Properties";
 import Match from "../services/MatchService";
 
@@ -12,12 +12,16 @@ export default function Home() {
   React.useEffect(()=>{
     const getItems = async () => {
       let _items = await service.getMatchUser();
+      
       setItems(_items.response.data.matches)
+
       console.log("_items",_items);
       console.log("items",items);
     }
+
     getItems();
   },[])
+  
   return (
     <div>
       <Box>
@@ -25,11 +29,13 @@ export default function Home() {
           <Grid item xs={12} lg={12}>
             <NavBar></NavBar>
           </Grid>
+          
           <Grid item xs={12} lg={8}>
             <Box display={"flex"}>
               <List title={"Eşleşen Kişiler"} items={items}></List>
             </Box>
           </Grid>
+
           <Grid item xs={12} lg={4}>
             <Box>
               <Properties></Properties>

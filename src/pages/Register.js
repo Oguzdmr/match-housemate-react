@@ -20,9 +20,8 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import AuthService from "../services/AuthService";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import moment from "moment";
 
 function Copyright(props) {
@@ -43,7 +42,6 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
@@ -60,27 +58,30 @@ export default function Register() {
     };
     reader.readAsDataURL(file);
   };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    const data = new FormData((event || {}).currentTarget || "");
     let genderValue = gender === "Erkek" ? 0 : 1;
+
     if (gender === "Farketmez") {
       genderValue = 2;
     }
+
     let birthDayRaw = moment(new Date(birthdayValue)).format("YYYY-MM-DD");
+
     const service = new AuthService();
     await service
       .register(
-        data.get("firstName"),
-        data.get("lastName"),
-        data.get("email"),
-        data.get("userName"),
-        data.get("password"),
+        data.get("firstName") || "",
+        data.get("lastName") || "",
+        data.get("email") || "",
+        data.get("userName") || "" ,
+        data.get("password") || "",
         birthDayRaw,
         genderValue,
         file
-      )
-      .then((res) => {
+      ).then((res) => {
         if (res.status === 200) {
           window.location.href = "/login";
         }
@@ -97,20 +98,22 @@ export default function Register() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-          }}
-        >
+          }}>
+
           <Avatar sx={{ m: 1, bgcolor: "#A3B484" }}>
             <LockOutlinedIcon />
           </Avatar>
+
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
+
           <Box
             component="form"
             noValidate
             onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
-          >
+            sx={{ mt: 3 }}>
+
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -123,6 +126,7 @@ export default function Register() {
                   autoFocus
                 />
               </Grid>
+
               <Grid item xs={12} sm={6}>
                 <TextField
                   required
@@ -138,24 +142,25 @@ export default function Register() {
                 <FormControl fullWidth>
                   <InputLabel
                     id="demo-simple-select-helper-label"
-                    height="30px"
-                  >
+                    height="30px">
                     Cinsiyet
                   </InputLabel>
+
                   <Select
                     labelId="demo-simple-select-helper-label"
                     id="gender"
                     value={gender}
                     label="Cinsiyet"
                     onChange={(e) => setGender(e.target.value)}
-                    sx={{ height: "50px" }}
-                  >
+                    sx={{ height: "50px" }}>
+
                     <MenuItem value={"Erkek"}>Erkek</MenuItem>
                     <MenuItem value={"Kadın"}>Kadın</MenuItem>
                     <MenuItem value={"Farketmez"}>Farketmez</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
+
               <Grid item xs={12} sm={6}>
                 <TextField
                   required
@@ -166,6 +171,7 @@ export default function Register() {
                   autoComplete="family-name"
                 />
               </Grid>
+
               <Grid item xs={12} sm={12} md={12} lg={12}>
                 <LocalizationProvider fullWidth dateAdapter={AdapterDayjs}>
                   <DemoContainer fullWidth components={["DatePicker"]}>
@@ -179,6 +185,7 @@ export default function Register() {
                   </DemoContainer>
                 </LocalizationProvider>
               </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   required
@@ -189,6 +196,7 @@ export default function Register() {
                   autoComplete="email"
                 />
               </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   required
@@ -200,6 +208,7 @@ export default function Register() {
                   autoComplete="new-password"
                 />
               </Grid>
+
               <Grid item xs={12}>
                 <MuiFileInput
                   value={file}
@@ -207,6 +216,7 @@ export default function Register() {
                   onChange={handleChange}
                 />
               </Grid>
+
               <Grid item xs={12}>
                 <FormControlLabel
                   control={
@@ -216,14 +226,15 @@ export default function Register() {
                 />
               </Grid>
             </Grid>
+
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
+              sx={{ mt: 3, mb: 2 }}>
               Sign Up
             </Button>
+
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/login" variant="body2">

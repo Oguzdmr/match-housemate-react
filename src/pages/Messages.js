@@ -10,7 +10,6 @@ import ImageIcon from "@mui/icons-material/Image";
 import WorkIcon from "@mui/icons-material/Work";
 import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import NavBar from "../components/NavBar";
-import { Padding } from "@mui/icons-material";
 
 const messages = [
   { id: 1, text: "Hi there!", sender: "bot" },
@@ -28,6 +27,7 @@ const ChatUI = () => {
   const handleSend = () => {
     if (input.trim() !== "") {
       console.log(input);
+
       setInput("");
     }
   };
@@ -42,6 +42,7 @@ const ChatUI = () => {
         <Grid item xs={12} lg={12}>
           <NavBar></NavBar>
         </Grid>
+
         <Grid item xs={12} lg={4}>
           <Box>
             <List sx={{ width: "100%", height: "90vh", bgcolor: "#EFEFF7" }}>
@@ -50,19 +51,21 @@ const ChatUI = () => {
                 sx={{
                   backgroundColor:
                     selectedItem === "List Item 1" ? "#fff" : "#EFEFF7",
-                  "&:hover": {
+                      "&:hover": {
                     backgroundColor:
-                      selectedItem !== "List Item 1" ? "lightgray" : "#fff", // İstenilen hover rengini buradan belirleyebilirsiniz
+                      selectedItem !== "List Item 1" ? "lightgray" : "#fff",
                   },
-                }}
-              >
+                }}>
+
                 <ListItemAvatar>
                   <Avatar>
                     <ImageIcon />
                   </Avatar>
                 </ListItemAvatar>
+
                 <ListItemText primary="Photos" secondary="Jan 9, 2014" />
               </ListItem>
+
               <ListItem
                 onClick={() => handleItemClick("List Item 2")}
                 sx={{
@@ -72,15 +75,17 @@ const ChatUI = () => {
                     backgroundColor:
                       selectedItem !== "List Item 2" ? "lightgray" : "#fff", // İstenilen hover rengini buradan belirleyebilirsiniz
                   },
-                }}
-              >
+                }}>
+
                 <ListItemAvatar>
                   <Avatar>
                     <WorkIcon />
                   </Avatar>
                 </ListItemAvatar>
+
                 <ListItemText primary="Work" secondary="Jan 7, 2014" />
               </ListItem>
+
               <ListItem
                 onClick={() => handleItemClick("List Item 3")}
                 sx={{
@@ -90,28 +95,30 @@ const ChatUI = () => {
                     backgroundColor:
                       selectedItem !== "List Item 3" ? "lightgray" : "#fff", // İstenilen hover rengini buradan belirleyebilirsiniz
                   },
-                }}
-              >
+                }}>
+
                 <ListItemAvatar>
                   <Avatar>
                     <BeachAccessIcon />
                   </Avatar>
                 </ListItemAvatar>
+
                 <ListItemText primary="Vacation" secondary="July 20, 2014" />
               </ListItem>
             </List>
           </Box>
         </Grid>
+
         <Grid item xs={12} lg={8}>
           <Box>
             <Box
-              sx={{ height: "90vh", display: "flex", flexDirection: "column" }}
-            >
+              sx={{ height: "90vh", display: "flex", flexDirection: "column" }}>
               <Box sx={{ flexGrow: 1, overflow: "auto", p: 2 }}>
                 {messages.map((message) => (
                   <Message key={message.id} message={message} />
                 ))}
               </Box>
+
               <Box sx={{ p: 2, backgroundColor: "background.default" }}>
                 <Grid container spacing={2}>
                   <Grid item xs={10}>
@@ -122,6 +129,7 @@ const ChatUI = () => {
                       onChange={handleInputChange}
                     />
                   </Grid>
+                  
                   <Grid item xs={2}>
                     <Button
                       sx={{

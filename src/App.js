@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Messages from "./pages/Messages";
 import Favorites from "./pages/Favorites";
+import ConfirmEmail from "./pages/ConfirmEmail";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/messages" element={<Messages />} />
         <Route path="/favorites" element={<Favorites />} />
+        <Route path="/confirmEmail" element={<ConfirmEmail />} />
       </Routes>
     </Router>
   );

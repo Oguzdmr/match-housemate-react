@@ -10,18 +10,18 @@ export default function Home() {
   const service = new Match();
 
   React.useEffect(()=> {
-    const getItems = async () => {
-      let _items = await service.getMatchUser();
-      
-      setItems((((_items || []).response || {}).data || {}).matches || []) 
-
-      console.log("_items", _items);
-      console.log("items", items);
-    }
-
     getItems();
   },[])
   
+  const getItems = async () => {
+    let _items = await service.getMatchUser();
+    
+    setItems((((_items || []).response || {}).data || {}).matches || []) 
+
+    console.log("_items", _items);
+    console.log("items", items);
+  }
+
   return (
     <div>
       <Box>
@@ -32,13 +32,13 @@ export default function Home() {
           
           <Grid item xs={12} lg={8}>
             <Box display={"flex"}>
-              <List title={"Eşleşen Kişiler"} items={items}></List>
+              <List title={"Eşleşen Kişiler"} items={items} getItems={getItems}></List>
             </Box>
           </Grid>
 
           <Grid item xs={12} lg={4}>
             <Box>
-              <Properties></Properties>
+              <Properties getItems={getItems}></Properties>
             </Box>
           </Grid>
         </Grid>

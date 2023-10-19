@@ -14,7 +14,7 @@ import Match from "../services/MatchService";
 import Favorite from "../services/Favorite";
 
 
-export default function AlignItemsList({ title, items }) {
+export default function AlignItemsList({ title, items, getItems}) {
 
   const [preferencesText,setPreferencesText] = React.useState({})
   const service = new Favorite();
@@ -49,16 +49,19 @@ export default function AlignItemsList({ title, items }) {
     return allText;
   }
 
-  const handleClickAddFavorite = async (id) => {
-    await service.addFavoritesUser(
-      id
-    );
-  };
-
-  const handleClickRemoveFavorite = async (id) => {
-    await service.removeFavoritesUser(
-      id
-    );
+  const handleClickFavorite = async (id,isFavorite) => {
+    if(!isFavorite){
+      await service.addFavoritesUser(
+        id
+      );
+      getItems()
+    }else{
+      await service.removeFavoritesUser(
+        id
+      );
+      getItems()
+    }
+   
   };
 
   return (
@@ -89,7 +92,7 @@ export default function AlignItemsList({ title, items }) {
       {items.length > 0 && items.map((item)=>(
         <div key={item.user.id}>
               <ListItem alignItems="flex-start" secondaryAction={
-                    <IconButton edge="end" aria-label="favorite" onClick={()=>handleClickAddFavorite(item.user.id)} >
+                    <IconButton edge="end" aria-label="favorite" onClick={()=>handleClickFavorite(item.user.id,item.isFolowing)} >
                       {item.isFolowing ? <StarIcon/> : <StarBorderIcon/>}
                     </IconButton>
                   } >

@@ -9,18 +9,26 @@ export default function Favorites() {
   const service = new Favorite();
 
   React.useEffect(()=>{
-    const getItems = async () => {
-      let _items = await service.getFavoritesUser();
-
-      setItems(_items.response.data)
-
-      console.log("_items",_items);
-      console.log("items",items);
-    }
-    
     getItems();
   },[])
   
+  const getItems = async () => {
+    let _items = await service.getFavoritesUser();
+    let resItems = [];
+    _items.response.data.forEach(item => {
+      resItems.push(
+        {
+          isFolowing:true,
+          user:item
+        }
+      )
+    });
+
+    setItems(resItems)
+    console.log("_items",_items);
+    console.log("items",items);
+  }
+
   return (
     <div>
       <Box>
@@ -30,7 +38,7 @@ export default function Favorites() {
           </Grid>
           <Grid item xs={12} lg={12}>
             <Box display={"flex"}>
-              <List title={"Favoriler"} items={items}></List>
+              <List title={"Favoriler"} items={items} getItems={getItems}></List>
             </Box>
           </Grid>
         </Grid>

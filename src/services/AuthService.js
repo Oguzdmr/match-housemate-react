@@ -42,7 +42,7 @@ class AuthService {
                 "password": password || "",
                 "email": email || "",
                 "birthDay": birthday || "",
-                "gender": gender || "",
+                "gender": gender,
                 "profilePhoto":image || ""
             }),
           })
@@ -100,6 +100,34 @@ class AuthService {
 
       return res;
     }
+
+    confirmEmail = async (user, token) => {
+      let status = 0
+      let res;
+
+      await fetch("https://api.roomie.helloworldeducation.com/api/auth/confirmemail", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+              "userId": user ,
+              "token": token
+          }),
+        })
+        .then((response) => {
+          status = (response || {}).status; 
+          
+          return (response || {}).json() || {}})
+        .then((result) => {
+          res = result;
+
+          (status === 200 || status === 201) && localStorage.setItem("data", JSON.stringify(result || {}));
+        })
+        .catch((error) => {console.log("error", error)});
+
+        return {status:status, response:res};
+    };
 }
 
 export default AuthService;

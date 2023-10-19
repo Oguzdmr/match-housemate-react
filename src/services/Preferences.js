@@ -34,7 +34,7 @@ class Preferences {
           .then((result) => {
             res = result;
 
-            let userData = (JSON.parse((window || {}).localStorage || 0) || {}).getItem('data') || {};
+            let userData = JSON.parse(((window || {}).localStorage || {}).getItem('data') || "{}") || {};
 
             ((userData.data || {}).user || {}).preferences = ((result || {}).data || {}).preferences || {};
             

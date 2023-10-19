@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Preferences from "../services/Preferences";
 
-export default function Properties() {
+export default function Properties({getItems}) {
   let userPreferences = (JSON.parse(window.localStorage.getItem('data') || '{}') || {}).data.user.preferences;
   const [gender, setGender] = React.useState(userPreferences.genderPref);
   const [pet, setPet] = React.useState(userPreferences.petsAllowed);
@@ -48,6 +48,7 @@ export default function Properties() {
       hasHome,
       adress
     );
+    getItems();
   };
 
   return (

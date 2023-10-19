@@ -62,14 +62,9 @@ export default function Register() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData((event || {}).currentTarget || "");
-    let genderValue = gender === "Erkek" ? 0 : 1;
-
-    if (gender === "Farketmez") {
-      genderValue = 2;
-    }
 
     let birthDayRaw = moment(new Date(birthdayValue)).format("YYYY-MM-DD");
-
+    console.log(gender);
     const service = new AuthService();
     await service
       .register(
@@ -79,7 +74,7 @@ export default function Register() {
         data.get("userName") || "" ,
         data.get("password") || "",
         birthDayRaw,
-        genderValue,
+        parseInt(gender),
         file
       ).then((res) => {
         if (res.status === 200) {
@@ -154,9 +149,9 @@ export default function Register() {
                     onChange={(e) => setGender(e.target.value)}
                     sx={{ height: "50px" }}>
 
-                    <MenuItem value={"Erkek"}>Erkek</MenuItem>
-                    <MenuItem value={"Kadın"}>Kadın</MenuItem>
-                    <MenuItem value={"Farketmez"}>Farketmez</MenuItem>
+                    <MenuItem value={"0"}>Erkek</MenuItem>
+                    <MenuItem value={"1"}>Kadın</MenuItem>
+                    <MenuItem value={"2"}>Farketmez</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>

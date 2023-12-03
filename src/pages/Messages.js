@@ -14,44 +14,51 @@ import {HubConnection, HubConnectionBuilder} from "@microsoft/signalr";
 import * as signalR from '@microsoft/signalr';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import {useSearchParams} from "react-router-dom"
+
+const config = require("../config");
 
 const messages = [
   { id: 1, text: "Hi there!", sender: "bot" },
   { id: 2, text: "Hello!", sender: "user" },
   { id: 3, text: "How can I assist you today?", sender: "bot" },
 ];
-let connection;
-
 
 const ChatUI = () => {
-  const [selectedUserName, setSelectedUserName] = React.useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [selectedUserName, setSelectedUserName] = React.useState(searchParams.get("userName") ? searchParams.get("userName") : "");
   const [selectedUserId, setSelectedUserId] = React.useState(0);
   const [text,setText]=React.useState("");
   const [msgList,setMsgList]=React.useState([])
   const [userList,setUserList]=React.useState([])
-
+  const [connection,setConnection]=React.useState(window.connection);
   
-  React.useEffect(() => {
-    return () => Connect();
-  },[])
+  React.useEffect(()=>{
+    return () => checkConnection();
+  },[]);
 
-  const Connect = () =>{    
-    connection = new signalR.HubConnectionBuilder().withUrl("https://api.roomie.helloworldeducation.com/chat", {
-      accessTokenFactory: ()=> (JSON.parse((localStorage || {}).getItem('data') || {}).data || "{}").accessToken || "" 
-    }).build();
+  React.useEffect(()=>{
+    if(connection){
+      Connect();
+    }
+  },[connection]);
   
-    connection.start().then(function () {
-        console.log("SignalR ile bağlantı kuruldu.");
-    
-        onConnected();
-        onError();
-        onNewMessage();
-        onUserChats();
-        onPreviousMessages();
-    
-      }).catch(function (err) {
-          return console.error(err.toString());
-      });
+  const checkConnection = () =>{
+    setTimeout(()=>{
+      if(window.connection){
+        setConnection(window.connection);
+      }else{
+        checkConnection();
+      }
+    },500);
+  }
+  const Connect = () => {   
+    console.log('Connect called');  
+      getChats();
+      onError();
+      onNewMessage();
+      onUserChats();
+      onPreviousMessages();
   }
 
   const SendPrivate = (recieverName = selectedUserName ? selectedUserName : "", message = text) => {
@@ -59,13 +66,6 @@ const ChatUI = () => {
     console.log("RecieverName", recieverName);
     connection.invoke("SendPrivate", recieverName, message).catch(function (err) {
       return console.error(err.toString());
-    });
-  }
-
-  const onConnected = () => {
-    connection.on("Connected", (userList) => {
-      console.log("ConnectedUserList", userList);
-      setUserList(userList);
     });
   }
 
@@ -83,17 +83,31 @@ const ChatUI = () => {
 
   const onUserChats = () => {
     connection.on("UserChats", (messagesObject) => {
+      setUserList(messagesObject)
       console.log('USER CHATS ----- ', messagesObject);
     });
   }
   const onPreviousMessages = () => {
     connection.on("previousMessages", (messagesObject) => {
       console.log('PREVIOUS MESSAGES ----- ', messagesObject);
+      let count =0;
+      let messages = messagesObject.map((message)=>{
+        count ++;
+        return {
+          id: count,
+          text: message.content,
+          sender: message.senderUserName
+        }
+      });
+      setMsgList(messages)
     });
   }
 
   const getChats = () =>{
-    connection.invoke("GetChats").catch(function (err) {
+    console.log('GetChats Invoked');
+    connection.invoke("GetChats").then((userList)=>{
+      console.log("UserList", userList);
+    }).catch(function (err) {
       return console.error(err.toString());
     });
   }
@@ -119,9 +133,6 @@ const ChatUI = () => {
 
   return (
     <Box>
-      {msgList.map((msg)=>(
-        <p>{msg}</p>
-      ))}
       <Grid container spacing={0}>
         <Grid item xs={12} lg={12}>
           <NavBar></NavBar>
@@ -132,84 +143,25 @@ const ChatUI = () => {
               <List sx={{ width: "100%", height: "90vh", bgcolor: "#EFEFF7" }}>
                 {userList && userList.map((user)=>(
                   <ListItem
-                  onClick={() => handleItemClick(user.RecieverUserName, user.Id)}
+                  onClick={() => handleItemClick(user.recieverUserName, user.id)}
                   sx={{
                     backgroundColor:
-                      selectedUserName === user.RecieverUserName ? "#fff" : "#EFEFF7",
+                      selectedUserName === user.recieverUserName ? "#fff" : "#EFEFF7",
                         "&:hover": {
                       backgroundColor:
-                        selectedUserName !== user.RecieverUserName ? "lightgray" : "#fff",
+                        selectedUserName !== user.recieverUserName ? "lightgray" : "#fff",
                     },
                   }}>
 
                   <ListItemAvatar>
-                    <Avatar src={user.RecieverPhoto}>
+                    <Avatar src={user.recieverPhoto}>
                       {/* <ImageIcon /> */}
                     </Avatar>
                   </ListItemAvatar>
 
-                  <ListItemText primary={user.RecieverFullName} secondary={user.RecieverLastMessage} />
+                  <ListItemText primary={user.recieverFullName} secondary={user.recieverLastMessage} />
                 </ListItem>
                 ))}
-                <ListItem
-                  onClick={() => handleItemClick("roomie.test2")}
-                  sx={{
-                    backgroundColor:
-                      selectedUserName === "roomie.test2" ? "#fff" : "#EFEFF7",
-                        "&:hover": {
-                      backgroundColor:
-                        selectedUserName !== "roomie.test2" ? "lightgray" : "#fff",
-                    },
-                  }}>
-
-                  <ListItemAvatar>
-                    <Avatar>
-                      <ImageIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-
-                  <ListItemText primary="Photos" secondary="Jan 9, 2014" />
-                </ListItem>
-
-                <ListItem
-                  onClick={() => handleItemClick("List Item 2","roomie.test2")}
-                  sx={{
-                    backgroundColor:
-                      selectedUserName === "List Item 2" ? "#fff" : "#EFEFF7",
-                    "&:hover": {
-                      backgroundColor:
-                        selectedUserName !== "List Item 2" ? "lightgray" : "#fff", // İstenilen hover rengini buradan belirleyebilirsiniz
-                    },
-                  }}>
-
-                  <ListItemAvatar>
-                    <Avatar>
-                      <WorkIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-
-                  <ListItemText primary="Work" secondary="Jan 7, 2014" />
-                </ListItem>
-
-                <ListItem
-                  onClick={() => handleItemClick("List Item 3")}
-                  sx={{
-                    backgroundColor:
-                      selectedUserName === "List Item 3" ? "#fff" : "#EFEFF7",
-                    "&:hover": {
-                      backgroundColor:
-                        selectedUserName !== "List Item 3" ? "lightgray" : "#fff", // İstenilen hover rengini buradan belirleyebilirsiniz
-                    },
-                  }}>
-
-                  <ListItemAvatar>
-                    <Avatar>
-                      <BeachAccessIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-
-                  <ListItemText primary="Vacation" secondary="July 20, 2014" />
-                </ListItem>
               </List>
             </Box>
           </Grid>
@@ -270,7 +222,8 @@ const ChatUI = () => {
 };
 
 const Message = ({ message }) => {
-  const isBot = message.sender === "bot";
+  console.log("username",JSON.parse((((window.localStorage || {}).getItem("data") || {}).data || {}).user || "{}").username);
+  const isBot = message.sender ===  JSON.parse((((window.localStorage || {}).getItem("data") || {}).data || {}).user || "{}").username;
 
   return (
     <Box

@@ -3,6 +3,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
+import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction" 
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
@@ -12,11 +13,14 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
 import Match from "../services/MatchService";
 import Favorite from "../services/Favorite";
+import MessageIcon from '@mui/icons-material/Message';
+import { useNavigate } from "react-router-dom";
 
 
 export default function AlignItemsList({ title, items, getItems}) {
 
   const [preferencesText,setPreferencesText] = React.useState({})
+  const navigate = useNavigate();
   const service = new Favorite();
 
   const preferences = (items) => {
@@ -91,11 +95,17 @@ export default function AlignItemsList({ title, items, getItems}) {
       </Typography>
       {items.length > 0 && items.map((item)=>(
         <div key={item.user.id}>
-              <ListItem alignItems="flex-start" secondaryAction={
-                    <IconButton edge="end" aria-label="favorite" onClick={()=>handleClickFavorite(item.user.id,item.isFolowing)} >
+              <ListItem alignItems="flex-start"  >
+              <ListItemSecondaryAction sx={{paddingRight: 3}}>
+                  <IconButton onClick={()=>{navigate("/messages?userName=" + item.user.username)}}>
+                  <MessageIcon/>
+                  </IconButton>
+              </ListItemSecondaryAction>
+              <ListItemSecondaryAction  >
+                <IconButton edge="end" aria-label="favorite" onClick={()=>handleClickFavorite(item.user.id,item.isFolowing)} >
                       {item.isFolowing ? <StarIcon/> : <StarBorderIcon/>}
-                    </IconButton>
-                  } >
+                </IconButton>
+              </ListItemSecondaryAction>
               <ListItemAvatar>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
               </ListItemAvatar>

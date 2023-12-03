@@ -1,10 +1,11 @@
+const config  = require("../config")
 
 class Match {
     getMatchUser = async () => {
         let status = 0
         let res;
 
-        res = await fetch("https://api.roomie.helloworldeducation.com/api/match", {
+        res = await fetch(config.baseUrl + "/api/match", {
             method: "GET",
             headers: {
               "Content-Type": "application/json",

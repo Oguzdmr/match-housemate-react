@@ -1,10 +1,11 @@
+const config  = require("../config")
 
 class AuthService {
     login = async (email, password) => {
         let status = 0
         let res;
 
-        await fetch("https://api.roomie.helloworldeducation.com/api/auth/login", {
+        await fetch(config.baseUrl + "/api/auth/login", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -30,7 +31,7 @@ class AuthService {
         let status = ""
         let res = ""
 
-        await fetch("https://api.roomie.helloworldeducation.com/api/auth/register", {
+        await fetch(config.baseUrl + "/api/auth/register", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -105,7 +106,7 @@ class AuthService {
       let status = 0
       let res;
 
-      await fetch("https://api.roomie.helloworldeducation.com/api/auth/confirmemail", {
+      await fetch(config.baseUrl + "/api/auth/confirmemail", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

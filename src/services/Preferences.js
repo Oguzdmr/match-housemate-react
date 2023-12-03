@@ -1,3 +1,4 @@
+const config  = require("../config")
 
 class Preferences {
     updatePreferences = async (gender, smokingAllowed,guestsAllowed, petsAllowed, foreignersAllowed, 
@@ -5,7 +6,7 @@ class Preferences {
         let status = 0
         let res;
 
-        await fetch("https://api.roomie.helloworldeducation.com/api/preferences", {
+        await fetch(config.baseUrl + "/api/preferences", {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",

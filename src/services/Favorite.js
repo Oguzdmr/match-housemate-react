@@ -1,10 +1,11 @@
+const config  = require("../config")
 
 class Favorites {
     getFavoritesUser = async () => {
         let status = 0
         let res;
 
-        res = await fetch("https://api.roomie.helloworldeducation.com/api/user/getfollows", {
+        res = await fetch(config.baseUrl + "/api/user/getfollows", {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -24,7 +25,7 @@ class Favorites {
         let status = 0
         let res;
 
-        res = await fetch("https://api.roomie.helloworldeducation.com/api/user/follow?id=" + id, {
+        res = await fetch(config.baseUrl + "/api/user/follow?id=" + id, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -44,7 +45,7 @@ class Favorites {
         let status = 0
         let res;
 
-        res = await fetch("https://api.roomie.helloworldeducation.com/api/user/unfollow?id="+id, {
+        res = await fetch(config.baseUrl + "/api/user/unfollow?id="+id, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

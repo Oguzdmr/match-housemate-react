@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
@@ -7,8 +6,30 @@ import Register from "./pages/Register";
 import Messages from "./pages/Messages";
 import Favorites from "./pages/Favorites";
 import ConfirmEmail from "./pages/ConfirmEmail";
+import React from "react";
+import {HubConnection, HubConnectionBuilder} from "@microsoft/signalr";
+import * as signalR from '@microsoft/signalr';
+
+const config  = require("./config")
 
 function App() {
+
+  React.useEffect(()=>{
+    return () => connectionBuild();
+  },[]);
+
+  const connectionBuild = () => {
+    window.connection = new signalR.HubConnectionBuilder().withUrl(config.baseUrl + "/chat", {
+      accessTokenFactory: ()=> (JSON.parse((localStorage || {}).getItem('data') || {}).data || "{}").accessToken || "" 
+    }).build();
+
+    window.connection.start().then(function () {
+      console.log("SignalR ile bağlantı kuruldu.");
+    }).catch(function (err) {
+        return console.error(err.toString());
+    });
+  }
+
   return (
     <Router>
       <Routes>

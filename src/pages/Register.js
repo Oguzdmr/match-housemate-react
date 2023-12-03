@@ -22,6 +22,13 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemText from '@mui/material/ListItemText';
+import IconButton from '@mui/material/IconButton';
+import FolderIcon from '@mui/icons-material/Folder';
+import DeleteIcon from '@mui/icons-material/Delete';
 import moment from "moment";
 
 function Copyright(props) {
@@ -47,11 +54,14 @@ const defaultTheme = createTheme();
 
 export default function Register() {
   const [file, setFile] = React.useState("");
+  const [fileCheck, setFileCheck] = React.useState();
   const [birthdayValue, setBirthdayValue] = React.useState("");
   const [gender, setGender] = React.useState("");
+  const [check, setCheck] = React.useState(false);
 
   const handleChange = (newFile) => {
     let file = newFile;
+    setFileCheck(file)
     let reader = new FileReader();
     reader.onload = function () {
       setFile(reader.result.replace("data:", "").replace(/^.+,/, ""));
@@ -66,7 +76,8 @@ export default function Register() {
     let birthDayRaw = moment(new Date(birthdayValue)).format("YYYY-MM-DD");
     console.log(gender);
     const service = new AuthService();
-    await service
+    if(check){
+      await service
       .register(
         data.get("firstName") || "",
         data.get("lastName") || "",
@@ -81,6 +92,8 @@ export default function Register() {
           window.location.href = "/login";
         }
       });
+    }
+    
   };
 
   return (
@@ -100,7 +113,7 @@ export default function Register() {
           </Avatar>
 
           <Typography component="h1" variant="h5">
-            Sign up
+            Kayıt Ol
           </Typography>
 
           <Box
@@ -117,7 +130,7 @@ export default function Register() {
                   required
                   fullWidth
                   id="firstName"
-                  label="First Name"
+                  label="İsim"
                   autoFocus
                 />
               </Grid>
@@ -127,7 +140,7 @@ export default function Register() {
                   required
                   fullWidth
                   id="lastName"
-                  label="Last Name"
+                  label="Soyisim"
                   name="lastName"
                   autoComplete="family-name"
                 />
@@ -186,7 +199,7 @@ export default function Register() {
                   required
                   fullWidth
                   id="email"
-                  label="Email Address"
+                  label="Email Adresi"
                   name="email"
                   autoComplete="email"
                 />
@@ -197,7 +210,7 @@ export default function Register() {
                   required
                   fullWidth
                   name="password"
-                  label="Password"
+                  label="Şifre"
                   type="password"
                   id="password"
                   autoComplete="new-password"
@@ -205,19 +218,41 @@ export default function Register() {
               </Grid>
 
               <Grid item xs={12}>
-                <MuiFileInput
+                {fileCheck == null ? (
+                  <MuiFileInput
                   value={file}
                   label="Profil Fotoğrafı"
                   onChange={handleChange}
                 />
+                ):(
+                  <List>
+                     <ListItem
+                      secondaryAction={
+                        <IconButton edge="end" aria-label="delete" onClick={()=>{setFile("");setFileCheck(null)}} >
+                          <DeleteIcon/>
+                        </IconButton>
+                      }
+                    >
+                    <ListItemAvatar>
+                      <Avatar>
+                        <FolderIcon />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={fileCheck.name}
+                    />
+                    </ListItem>,
+                  </List>
+                )}
+                
               </Grid>
 
               <Grid item xs={12}>
                 <FormControlLabel
                   control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
+                    <Checkbox value="allowExtraEmails" onChange={()=>setCheck(!check)} color="primary" />
                   }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
+                  label="Hizmet koşullarını kabul ediyorum."
                 />
               </Grid>
             </Grid>
@@ -227,13 +262,13 @@ export default function Register() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}>
-              Sign Up
+              Kayıt Ol
             </Button>
 
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/login" variant="body2">
-                  Already have an account? Sign in
+                  Zaten bir hesabın var mı? Giriş Yap
                 </Link>
               </Grid>
             </Grid>

@@ -53,13 +53,6 @@ export default function Login() {
           window.location.href = "/";
         }
       });
-
-    /*  
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-    */
   };
 
   return (
@@ -79,7 +72,7 @@ export default function Login() {
           </Avatar>
 
           <Typography component="h1" variant="h5">
-            Sign in
+            Giriş Yap
           </Typography>
 
           <Box
@@ -93,7 +86,7 @@ export default function Login() {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="Email Adresi"
               name="email"
               autoComplete="email"
               autoFocus
@@ -104,23 +97,23 @@ export default function Login() {
               required
               fullWidth
               name="password"
-              label="Password"
+              label="Şifre"
               type="password"
               id="password"
               autoComplete="current-password"
             />
 
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
-            />
+            /> */}
 
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}>
-              Sign In
+              Giriş Yap
             </Button>
 
             <Grid container>
@@ -132,7 +125,7 @@ export default function Login() {
 
               <Grid item>
                 <Link href="/register" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                  {"Hesabın yok mu? Kayıt Ol"}
                 </Link>
               </Grid>
             </Grid>

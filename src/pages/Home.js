@@ -10,7 +10,7 @@ export default function Home() {
   const service = new Match();
 
   React.useEffect(()=> {
-    getItems();
+   getItems();
   },[])
   
   const getItems = async () => {

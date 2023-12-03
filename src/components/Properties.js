@@ -117,9 +117,8 @@ export default function Properties({getItems}) {
             </Box>
           </Grid>
           <Grid item xs={12} lg={3}>
-            <Box sx={{ margin: "10px", height: "30px" }}>
+            <Box sx={{ margin: "10px" }}>
               <TextField
-                sx={{ height: "30px" }}
                 fullWidth
                 id="outlined-number-max"
                 label="Max Kişi Sayısı"

@@ -43,6 +43,8 @@ function NavBar() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+    localStorage.setItem("data",JSON.stringify({"data":{}}));
+    window.location.replace("/login");
   };
 
   return (

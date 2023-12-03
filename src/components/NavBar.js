@@ -67,7 +67,7 @@ function NavBar() {
               textDecoration: "none",
             }}
           >
-            Roomie
+            RoomieRoster
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -116,10 +116,10 @@ function NavBar() {
           </Box>
           <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
-            variant="h5"
+            variant="h6"
             noWrap
             component="a"
-            href=""
+            href="/"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -131,7 +131,7 @@ function NavBar() {
               textDecoration: "none",
             }}
           >
-            Roomie
+            RoomieRoster
           </Typography>
           <Box
             sx={{
@@ -160,7 +160,7 @@ function NavBar() {
                   src={
                     localStorage.getItem("data")
                       ? "data:image/jpeg;base64," +
-                        JSON.parse((((window.localStorage || {}).getItem("data") || {}).data || {}).user || "{}").profilePhoto || ""
+                      (((JSON.parse(window.localStorage.getItem('data') || {}) || {}).data || {}).user || {}).profilePhoto
                       : ""
                   }
                 />

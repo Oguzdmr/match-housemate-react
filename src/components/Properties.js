@@ -9,7 +9,7 @@ import Button from "@mui/material/Button";
 import Preferences from "../services/Preferences";
 
 export default function Properties({getItems}) {
-  let userPreferences = (JSON.parse(window.localStorage.getItem('data') || '{}') || {}).data.user.preferences;
+  let userPreferences = (((JSON.parse(window.localStorage.getItem('data') || '{}') || {}).data || {}).user || {}).preferences || {};
   const [gender, setGender] = React.useState(userPreferences.genderPref);
   const [pet, setPet] = React.useState(userPreferences.petsAllowed);
   const [guest, setGuest] = React.useState(userPreferences.guestsAllowed);
@@ -20,9 +20,9 @@ export default function Properties({getItems}) {
   const [budget, setBudget] = React.useState(userPreferences.budgetMin + '-' + userPreferences.budgetMax);
   const [minPersonCount, setMinPersonCount] = React.useState(userPreferences.acceptableRoommatesMin);
   const [maxPersonCount, setMaxPersonCount] = React.useState(userPreferences.acceptableRoommatesMax);
-  const [city, setCity] = React.useState(userPreferences.address.city);
-  const [district, setDistrict] = React.useState(userPreferences.address.district);
-  const [neighborhood, setNeighborhood] = React.useState(userPreferences.address.neighborhood);
+  const [city, setCity] = React.useState((userPreferences.address || {}).city);
+  const [district, setDistrict] = React.useState((userPreferences.address || {}).district);
+  const [neighborhood, setNeighborhood] = React.useState((userPreferences.address || {}).neighborhood);
   const [hasHome, setHasHome] = React.useState(userPreferences.hasHome);
   const service = new Preferences();
 

@@ -15,19 +15,28 @@ const config  = require("./config")
 function App() {
 
   React.useEffect(()=>{
+    const userData = JSON.parse(localStorage.getItem('data'));
+    if ((!userData || !userData.data || !userData.data.accessToken) && window.location.href.indexOf('login') === -1 &&
+      window.location.href.indexOf('register') === -1) {
+      window.location.href = '/login';
+    }
+
+
     return () => connectionBuild();
   },[]);
 
   const connectionBuild = () => {
-    window.connection = new signalR.HubConnectionBuilder().withUrl(config.baseUrl + "/chat", {
-      accessTokenFactory: ()=> (JSON.parse((localStorage || {}).getItem('data') || {}).data || "{}").accessToken || "" 
-    }).build();
-
-    window.connection.start().then(function () {
-      console.log("SignalR ile bağlantı kuruldu.");
-    }).catch(function (err) {
-        return console.error(err.toString());
-    });
+    if(window.location.href.indexOf('login') === -1 &&  window.location.href.indexOf('register') === -1){
+      window.connection = new signalR.HubConnectionBuilder().withUrl(config.baseUrl + "/chat", {
+        accessTokenFactory: ()=> (JSON.parse((localStorage || {}).getItem('data') || {}).data || "{}").accessToken || "" 
+      }).build();
+  
+      window.connection.start().then(function () {
+        console.log("SignalR ile bağlantı kuruldu.");
+      }).catch(function (err) {
+          return console.error(err.toString());
+      });
+    }
   }
 
   return (
